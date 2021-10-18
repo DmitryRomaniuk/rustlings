@@ -10,18 +10,32 @@
 
 // Execute 'rustlings hint generics3' for hints!
 
-// I AM NOT DONE
-
 pub struct ReportCard {
     pub grade: f32,
     pub student_name: String,
     pub student_age: u8,
+    pub show_alphabetical: bool,
+}
+
+fn transformNumberToAlpha(grade: f32) -> String {
+    match grade {
+        val if (5.0..=5.5).contains(&val) => "A+".to_owned(),
+        val if (4.5..=5.0).contains(&val) => "A".to_owned(),
+        val if (4.0..=4.5).contains(&val) => "A-".to_owned(),
+        val if (3.5..=4.0).contains(&val) => "B+".to_owned(),
+        val if (3.0..=3.5).contains(&val) => "B".to_owned(),
+        val if (2.5..=3.0).contains(&val) => "B-".to_owned(),
+        val if (2.0..=2.5).contains(&val) => "A+".to_owned(),
+        val if (1.5..=2.0).contains(&val) => "A".to_owned(),
+        val if (0.0..=1.5).contains(&val) => "A-".to_owned(),
+        st => st.to_string().to_owned(),
+    }
 }
 
 impl ReportCard {
     pub fn print(&self) -> String {
         format!("{} ({}) - achieved a grade of {}",
-            &self.student_name, &self.student_age, &self.grade)
+            &self.student_name, &self.student_age, if (self.show_alphabetical) {transformNumberToAlpha(self.grade)} else {self.grade.to_string()})
     }
 }
 
@@ -35,6 +49,7 @@ mod tests {
             grade: 2.1,
             student_name: "Tom Wriggle".to_string(),
             student_age: 12,
+            show_alphabetical: false,
         };
         assert_eq!(
             report_card.print(),
@@ -49,6 +64,7 @@ mod tests {
             grade: 2.1,
             student_name: "Gary Plotter".to_string(),
             student_age: 11,
+            show_alphabetical: true,
         };
         assert_eq!(
             report_card.print(),
